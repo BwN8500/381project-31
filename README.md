@@ -390,6 +390,19 @@ npm start
     ```
 - **Authentication**: User required.
 
+- **Testing with Curl**
+
+###1. Login to Obtain Access Token
+```
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "password123"}'
+```
+
+###2. Get All Books
+```
+curl -X GET http://localhost:3000/api/book
+```
 ## Middleware
 
 ### `verifyRole(role)`
