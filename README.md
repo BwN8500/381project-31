@@ -390,6 +390,92 @@ npm start
     ```
 - **Authentication**: User required.
 
+## API Tests
+
+### Authentication
+
+#### Login
+To authenticate a user, you can use the following curl command:
+
+```bash
+curl -L 'https://381project-31.azurewebsites.net/api/auth/login' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@hkmu.com",
+    "password": "admin"
+}'
+```
+
+**Response:**
+```json
+{
+    "message": "Login success",
+    "role": "admin"
+}
+```
+
+### Book Management
+
+#### Get All Books
+To retrieve the list of all books, use the following command:
+
+```bash
+curl -L 'https://381project-31.azurewebsites.net/api/book'
+```
+
+**Response:**
+```json
+[
+    {
+        "_id": "674169fd759789a097b76c66",
+        "title": "1984",
+        "author": "George Orwell",
+        "date": "1949-06-08T00:00:00.000Z",
+        "Description": "Explore the consequences of the party and government overextending their power, promoting totalitarianism, and implementing repressive rule. The story takes place in 1984 - it is the author's fictional imagination of the future at that time.",
+        "stock": 222,
+        "__v": 0
+    },
+    {
+        "_id": "6743432191efa38d2d855ceb",
+        "title": "Do Androids Dream of Electric Sheep?",
+        "author": "Philip K. Dick",
+        "date": "2022-12-15T00:00:00.000Z",
+        "Description": "It was January 2021, and Rick Deckard had a license to kill. Somewhere among the hordes of humans out there, lurked several rogue androids. Deckard's assignment--find them and then...\"retire\" them. Trouble was, the androids all looked exactly like humans, and they didn't want to be found!",
+        "stock": 3,
+        "__v": 0
+    },
+    {
+        "_id": "6743437191efa38d2d855cfe",
+        "title": "The Hitchhiker’s Guide to the Galaxy",
+        "author": "Douglas Adams",
+        "date": "2024-01-05T00:00:00.000Z",
+        "Description": "Seconds before the Earth is demolished to make way for a galactic freeway, Arthur Dent is plucked off the planet by his friend Ford Prefect, a researcher for the revised edition of The Hitchhiker's Guide to the Galaxy who, for the last fifteen years, has been posing as an out-of-work actor.",
+        "stock": 15,
+        "__v": 0
+    }
+]
+```
+
+#### Create a New Book
+To create a new book entry, use the following command (make sure to replace `/path_to_image` with the actual path to your image file):
+
+```bash
+curl -L 'https://381project-31.azurewebsites.net/api/book/create' \
+-F 'title="test"' \
+-F 'author="test"' \
+-F 'date="2019-06-08"' \
+-F 'Description=""' \
+-F 'stock="7"' \
+-F 'image=@"/path_to_image"'
+```
+
+**Response:**
+```json
+{
+    "message": "File uploaded successfully"
+}
+```
+
 ## Middleware
 
 ### `verifyRole(role)`
