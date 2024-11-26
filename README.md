@@ -390,19 +390,6 @@ npm start
     ```
 - **Authentication**: User required.
 
-#### Testing with Curl
-
-### 1. Login to Obtain Access Token
-```
-curl -X POST https://381project-31.azurewebsites.net/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "admin@hkmu.com", "password": "admin"}'
-```
-
-### 2. Get All Books
-```
-curl -X GET https://381project-31.azurewebsites.net/api/book
-```
 ## Middleware
 
 ### `verifyRole(role)`
