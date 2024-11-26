@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Main Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo a {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff4e4e;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin-right: 2rem;
+    }
+
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ff4e4e;
+    }
+
+    /* User Info */
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .user-info span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    /* Main Content */
+    main {
+      text-align: center;
+      padding: 4rem 2rem;
+      background-color: #f9f9f9;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    main h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    main p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      font-size: 1rem;
+    }
+
+    .search-bar button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      background-color: #ff4e4e;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-bar button:hover {
+      background-color: #e04343;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    async function handleLogout() {
+      try {
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (response.ok) {
+          window.location.href = '/login';
+        } else {
+          const result = await response.json();
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during logout. Please try again.');
+      }
+    }
+  </script>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <a href="main">MLibrary</a>
+    </div>
+    <nav>
+      <!-- User Info -->
+      <div class="user-info">
+        <span>
+          User:
+          <%= user.username %>
+        </span>
+      </div>
+      <ul>
+        <li><a href="book-list">Book List</a></li>
+        <li><a href="add-book">Add Book</a></li>
+        <% if (show){ %>
+          <li><a href="management-user">User Management</a></li>
+          <li><a href="add-user">Add User</a></li>
+          <%}%>
+            <li><a href="#" onclick="handleLogout()">Logout</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="main-info">
+      <h1>Welcome MLibrary
+      </h1>
+      <p>Explore books, resources, and more!</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2024 Library. All rights reserved.
+  </footer>
+
+</body>
+
+</html>

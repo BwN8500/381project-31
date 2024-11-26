@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    /* Top Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo a {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff4e4e;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin-right: 2rem;
+    }
+
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ff4e4e;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .user-info span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    /* User Management Table */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    table th,
+    table td {
+      text-align: left;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    table img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .btn-edit {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-edit:hover {
+      background-color: #45a049;
+    }
+
+    .btn-delete {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #f44336;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-delete:hover {
+      background-color: #e53935;
+    }
+
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      width: 50%;
+      border-radius: 8px;
+    }
+
+    .close-btn {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: #000;
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    form button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    async function handleLogout() {
+      try {
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (response.ok) {
+          window.location.href = '/login';
+        } else {
+          const result = await response.json();
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during logout. Please try again.');
+      }
+    }
+  </script>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <a href="main">MLibrary</a>
+    </div>
+    <nav>
+      <!-- User Info -->
+      <div class="user-info">
+        <span>
+          User:
+          <%= user.username %>
+        </span>
+      </div>
+      <ul>
+        <li><a href="book-list">Book List</a></li>
+        <li><a href="add-book">Add Book</a></li>
+        <li><a href="management-user">User Management</a></li>
+        <li><a href="add-user">Add User</a></li>
+        <li><a href="#" onclick="handleLogout()">Logout</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+  <!-- User Management Content -->
+  <main>
+    <div class="container">
+      <h1>User Management</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Hong Kong ID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="user-list">
+          <% users.forEach(function(user) { %>
+            <tr class="usersinfo" data-id="<%= user._id %>" data-email="<%= user.email %>"
+              data-username="<%= user.username %>" data-phone="<%= user.phone %>" data-hkid="<%= user.hkid %>">
+              <td>
+                <%= user.email %>
+              </td>
+              <td>
+                <%= user.username %>
+              </td>
+              <td>
+                <%= user.phone %>
+              </td>
+              <td>
+                <%= user.hkid %>
+              </td>
+              <td>
+                <button class="btn-edit" onclick="openEditModal(this)">Edit</button>
+                <button class="btn-delete" onclick="deleteBook(this)">Delete</button>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeEditModal()">&times;</span>
+      <h2>Edit User</h2>
+      <form id="edit-form" action="" method="PUT" enctype="multipart/form-data">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="hkid">HKID:</label>
+        <input type="text" id="hkid" name="hkid" required>
+
+        <button type="submit">Save Changes</button>
+        <input type="hidden" id="id" name="id">
+      </form>
+    </div>
+  </div>
+
+  <script>function openEditModal(button) {
+      const modal = document.getElementById('edit-modal');
+      const form = document.getElementById('edit-form');
+      const userInfo = button.closest('.usersinfo'); // Should now find the <tr> element
+
+      if (!userInfo) {
+        console.error('User information not found.');
+        return;
+      }
+
+      // Populate the form with user data
+      form.email.value = userInfo.dataset.email;
+      form.username.value = userInfo.dataset.username;
+      form.phone.value = userInfo.dataset.phone;
+      form.hkid.value = userInfo.dataset.hkid;
+      form.id.value = userInfo.dataset.id;
+
+      modal.style.display = 'block';
+    }
+
+    async function deleteBook(button) {
+      const userInfo = button.closest('.usersinfo'); // Should now find the <tr> element
+      if (!userInfo) {
+        console.error('User information not found.');
+        return;
+      }
+
+      const userId = userInfo.dataset.id;
+      const username = userInfo.dataset.username;
+      if (confirm(`Are you sure you want to delete "${username}"?`)) {
+        try {
+          const response = await fetch(`/api/user/delete/${userId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+          });
+          if (response.ok) {
+            userInfo.remove();
+            alert(`${username} has been deleted successfully.`);
+          } else {
+            alert('Failed to delete the user. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error deleting user:', error);
+          alert('An error occurred while deleting the user.');
+        }
+      }
+    }
+
+
+    // Close the modal
+    function closeEditModal() {
+      const modal = document.getElementById('edit-modal');
+      modal.style.display = 'none';
+    }
+
+    document.getElementById('edit-form').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const id = this.querySelector('#id').value;
+      try {
+        const response = await fetch(`api/user/update/${id}`, {
+          method: 'PUT',
+          body: formData,
+        });
+        console.log(response);
+        if (response.ok) {
+          location.reload();
+        } else {
+          const errorData = await response.json();
+          alert(`Error: ${errorData.message || 'An error occurred'}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    });
+  </script>
+</body>
+
+</html>

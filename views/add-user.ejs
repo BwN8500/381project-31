@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add User</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo a {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff4e4e;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin-right: 2rem;
+    }
+
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ff4e4e;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .user-info span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #ff4e4e;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    form input,
+    form button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    form button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+
+    .preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .preview img {
+      width: 120px;
+      height: 120px;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    async function handleLogout() {
+      try {
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (response.ok) {
+          window.location.href = '/login';
+        } else {
+          const result = await response.json();
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during logout. Please try again.');
+      }
+    }
+  </script>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <a href="main">MLibrary</a>
+    </div>
+    <nav>
+      <!-- User Info -->
+      <div class="user-info">
+        <span>
+          User:
+          <%= user.username %>
+        </span>
+      </div>
+      <ul>
+        <li><a href="book-list">Book List</a></li>
+        <li><a href="add-book">Add Book</a></li>
+        <li><a href="management-user">User Management</a></li>
+        <li><a href="add-user">Add User</a></li>
+        <li><a href="#" onclick="handleLogout()">Logout</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Add New User</h1>
+    <form id="adduserform" enctype="multipart/form-data">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter user's email" required>
+
+      <label for="username">Name:</label>
+      <input type="text" id="username" name="username" placeholder="Enter user's name" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter user's password" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+
+      <label for="hkid">Hong Kong ID:</label>
+      <input type="text" id="hkid" name="hkid" placeholder="Enter Hong Kong ID" required>
+
+      <button type="submit">Add User</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('adduserform').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(document.getElementById('adduserform'));
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+      try {
+        const response = await fetch('/api/user/create', {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await response.json();
+        if (response.ok) {
+          window.location.href = '/management-user';
+        } else {
+          alert(`Error: ${result.message}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An unexpected error occurred.');
+      }
+    });
+  </script>
+</body>
+
+</html>

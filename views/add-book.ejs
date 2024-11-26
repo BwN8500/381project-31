@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Book</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo a {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ff4e4e;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin-right: 2rem;
+    }
+
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ff4e4e;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .user-info span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    /* book list */
+    .book-info {
+      padding: 2rem;
+    }
+
+    .book-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .book-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+
+    .book-item img {
+      width: 80px;
+      height: 100px;
+      object-fit: cover;
+      margin-right: 1rem;
+      border: 1px solid #ccc;
+    }
+
+    .book-details {
+      flex: 1;
+      margin-right: 1rem;
+    }
+
+    .book-details h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .book-details p {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .book-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .book-actions button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    .book-actions .edit-btn {
+      background-color: #4caf50;
+    }
+
+    .book-actions .delete-btn {
+      background-color: #f44336;
+    }
+
+    .book-actions button:hover {
+      opacity: 0.9;
+    }
+
+    .main-info {
+      text-align: center;
+      padding: 4rem 2rem;
+      background-color: #f9f9f9;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main-info h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .main-info p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .search-bar button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      background-color: #ff4e4e;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-bar button:hover {
+      background-color: #e04343;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #ff4e4e;
+    }
+
+    form label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    form input,
+    form textarea,
+    form button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    form textarea {
+      height: 100px;
+      resize: none;
+    }
+
+    form button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+
+    .preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .preview img {
+      width: 120px;
+      height: 150px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    async function handleLogout() {
+      try {
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (response.ok) {
+          window.location.href = '/login';
+        } else {
+          const result = await response.json();
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during logout. Please try again.');
+      }
+    }
+  </script>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <a href="main">MLibrary</a>
+    </div>
+    <nav>
+      <!-- User Info -->
+      <div class="user-info">
+        <span>
+          User:
+          <%= user.username %>
+        </span>
+      </div>
+      <ul>
+        <li><a href="book-list">Book List</a></li>
+        <li><a href="add-book">Add Book</a></li>
+        <% if (show){ %>
+          <li><a href="management-user">User Management</a></li>
+          <li><a href="add-user">Add User</a></li>
+          <%}%>
+            <li><a href="#" onclick="handleLogout()">Logout</a></li>
+      </ul>
+
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Add New Book</h1>
+    <form id="submitForm" enctype="multipart/form-data">
+      <label for="title">Book Title:</label>
+      <input type="text" id="title" name="title" placeholder="Enter book title" required>
+
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author" placeholder="Enter author name" required>
+
+      <label for="date">Release Date:</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="stock">Stock:</label>
+      <input type="number" id="stock" name="stock" placeholder="Enter stock quantity" required>
+
+      <label for="description">Description:</label>
+      <textarea id="Description" name="Description" placeholder="Enter book description" required></textarea>
+
+      <label for="image">Upload Book Image:</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <!-- Image Preview -->
+      <div class="preview">
+        <img id="image-preview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
+      </div>
+
+      <button type="submit">Add Book</button>
+    </form>
+  </div>
+
+  <script>
+    // Script for image preview
+    document.getElementById('image').addEventListener('change', function (event) {
+      const preview = document.getElementById('image-preview');
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = '#';
+        preview.style.display = 'none';
+      }
+    });
+    document.getElementById('submitForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(document.getElementById('submitForm'));
+      try {
+        const response = await fetch('/api/book/create', {
+          method: 'POST',
+          body: formData,
+        });
+        const result = await response.json();
+        if (response.ok) {
+          window.location.href = '/book-list';
+        } else {
+          alert(`Error: ${result.error}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An unexpected error occurred.');
+      }
+    });
+  </script>
+</body>
+
+
+</html>
