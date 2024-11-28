@@ -9,7 +9,7 @@ https://381project-31.azurewebsites.net/
 **Library System**
 
 ## Group Information
-- **Group No.:** 381project-31
+- **Group No.:** 381project-Group31
 - **Students’ Names and SIDs:**
   - CHAN WAI HING (SID: 13809428)
   - Lam Kai Yeung (SID: 13831183)
