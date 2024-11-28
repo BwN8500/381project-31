@@ -9,7 +9,7 @@ https://381project-31.azurewebsites.net/
 **Library System**
 
 ## Group Information
-- **Group No.:** 381project-Group31
+- **Group No.:** 381project-31
 - **Students’ Names and SIDs:**
   - CHAN WAI HING (SID: 13809428)
   - Lam Kai Yeung (SID: 13831183)
@@ -399,6 +399,7 @@ To authenticate a user, you can use the following curl command:
 
 ```bash
 curl -L 'https://381project-31.azurewebsites.net/api/auth/login' \
+-c cookies.txt \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "email": "admin@hkmu.com",
@@ -420,7 +421,8 @@ curl -L 'https://381project-31.azurewebsites.net/api/auth/login' \
 To retrieve the list of all books, use the following command:
 
 ```bash
-curl -L 'https://381project-31.azurewebsites.net/api/book'
+curl -L 'https://381project-31.azurewebsites.net/api/book' \
+-b cookies.txt 
 ```
 
 **Response:**
@@ -461,6 +463,7 @@ To create a new book entry, use the following command (make sure to replace `/pa
 
 ```bash
 curl -L 'https://381project-31.azurewebsites.net/api/book/create' \
+-b cookies.txt \
 -F 'title="test"' \
 -F 'author="test"' \
 -F 'date="2019-06-08"' \
